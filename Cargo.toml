@@ -133,6 +133,9 @@ erased-serde = "0.3.31"
 fake = "2.10"
 fastbloom = "0.14.0"
 fdlimit = "0.3.0"
+# AMQP 1.0 client for the RabbitMQ connector.
+fe2o3-amqp = "0.15.1"
+serde_amqp = "0.14.1"
 feldera-buffer-cache = { version = "0.316.0", path = "crates/buffer-cache" }
 feldera-cloud1-client = "0.1.2"
 feldera-datagen = { path = "crates/datagen" }
@@ -242,6 +245,8 @@ rstest = "0.15"
 # Make sure this is the same rustls version used by the `tonic` crate.
 # See the `ensure_default_crypto_provider` function.
 rustls = "0.23.12"
+rustls-native-certs = "0.8.1"
+rustls-pemfile = "2.2.0"
 rustversion = "1.0"
 rustyline = "15.0"
 ryu = "1.0.20"
@@ -288,6 +293,7 @@ tikv-jemallocator = "0.6.0"
 time = { version = "0.3.47", features = ["serde", "serde-well-known"] }
 tokio = "1.50.0"
 tokio-postgres = "0.7"
+tokio-rustls = "0.26.1"
 tokio-stream = "0.1.18"
 tokio-util = "0.7.11"
 tracing = "0.1.40"

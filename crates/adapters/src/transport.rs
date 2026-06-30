@@ -53,6 +53,9 @@ mod nexmark;
 #[cfg(feature = "with-pubsub")]
 mod pubsub;
 
+#[cfg(feature = "with-rabbitmq")]
+pub(crate) mod rabbitmq;
+
 #[cfg(feature = "with-redis")]
 mod redis;
 
@@ -71,6 +74,9 @@ use crate::transport::null::NullOutputEndpoint;
 
 #[cfg(feature = "with-nats")]
 use crate::transport::nats::NatsInputEndpoint;
+
+#[cfg(feature = "with-rabbitmq")]
+use crate::transport::rabbitmq::{RabbitMqInputEndpoint, RabbitMqOutputEndpoint};
 
 #[cfg(feature = "with-nexmark")]
 use crate::transport::nexmark::NexmarkEndpoint;
@@ -106,6 +112,10 @@ pub fn input_transport_config_to_endpoint(
         TransportConfig::PubSubInput(config) => Box::new(PubSubInputEndpoint::new(config.clone())?),
         #[cfg(not(feature = "with-pubsub"))]
         TransportConfig::PubSubInput(_) => return Ok(None),
+        #[cfg(feature = "with-rabbitmq")]
+        TransportConfig::RabbitMqInput(config) => Box::new(RabbitMqInputEndpoint::new(config)?),
+        #[cfg(not(feature = "with-rabbitmq"))]
+        TransportConfig::RabbitMqInput(_) => return Ok(None),
         TransportConfig::UrlInput(config) => Box::new(UrlInputEndpoint::new(config)),
         TransportConfig::S3Input(config) => Box::new(S3InputEndpoint::new(config)?),
         TransportConfig::Datagen(config) => Box::new(GeneratorEndpoint::new(config.clone())),
@@ -127,6 +137,7 @@ pub fn input_transport_config_to_endpoint(
         | TransportConfig::PostgresOutput(_)
         | TransportConfig::HttpOutput(_)
         | TransportConfig::RedisOutput(_)
+        | TransportConfig::RabbitMqOutput(_)
         | TransportConfig::IcebergInput(_)
         | TransportConfig::NullOutput => return Ok(None),
     };
@@ -163,6 +174,10 @@ pub fn output_transport_config_to_endpoint(
         #[cfg(feature = "with-redis")]
         TransportConfig::RedisOutput(config) => {
             Ok(Some(Box::new(RedisOutputEndpoint::new(config)?)))
+        }
+        #[cfg(feature = "with-rabbitmq")]
+        TransportConfig::RabbitMqOutput(config) => {
+            Ok(Some(Box::new(RabbitMqOutputEndpoint::new(config)?)))
         }
         TransportConfig::NullOutput => Ok(Some(Box::new(NullOutputEndpoint))),
         _ => Ok(None),

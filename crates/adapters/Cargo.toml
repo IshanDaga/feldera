@@ -24,6 +24,7 @@ default = [
     "with-pubsub",
     "with-redis",
     "with-nats",
+    "with-rabbitmq",
     "with-postgres-cdc",
     "with-dynamodb",
     "with-heap-profiling",
@@ -53,9 +54,19 @@ with-dynamodb = [
 with-nexmark = ["dbsp_nexmark"]
 with-redis = ["redis", "r2d2"]
 with-nats = []
+with-rabbitmq = [
+    "fe2o3-amqp",
+    "serde_amqp",
+    "tokio-rustls",
+    "rustls-native-certs",
+    "rustls-pemfile",
+]
 # Run delta table tests against an S3 bucket.  Requires S3 authentication key
 # to be provided via an environment variable.
 delta-s3-test = []
+# Run RabbitMQ connector tests against a live broker with AMQP 1.0 enabled.
+# The broker location is taken from $RABBITMQ_URL. See `rabbitmq/test.rs`.
+rabbitmq-test = ["with-rabbitmq"]
 # Run Pub/Sub connector tests agains an emulator.
 # The emulator must be running. See `pubsub/test.rs`.
 pubsub-emulator-test = []
@@ -193,6 +204,11 @@ tokio-postgres = { workspace = true, features = [
 num-bigint = { workspace = true }
 redis = { workspace = true, features = ["r2d2"], optional = true }
 r2d2 = { workspace = true, optional = true }
+fe2o3-amqp = { workspace = true, features = ["rustls"], optional = true }
+serde_amqp = { workspace = true, optional = true }
+tokio-rustls = { workspace = true, optional = true }
+rustls-native-certs = { workspace = true, optional = true }
+rustls-pemfile = { workspace = true, optional = true }
 async-channel = { workspace = true }
 threadpool = { workspace = true }
 bytemuck = { workspace = true }

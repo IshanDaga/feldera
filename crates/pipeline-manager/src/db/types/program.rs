@@ -723,6 +723,7 @@ pub fn generate_program_info(
                 TransportConfig::FileInput(_)
                 | TransportConfig::NatsInput(_)
                 | TransportConfig::KafkaInput(_)
+                | TransportConfig::RabbitMqInput(_)
                 | TransportConfig::PubSubInput(_)
                 | TransportConfig::UrlInput(_)
                 | TransportConfig::S3Input(_)

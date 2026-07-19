@@ -18,6 +18,7 @@ use crate::transport::http::{HttpInputConfig, HttpOutputConfig};
 use crate::transport::iceberg::IcebergReaderConfig;
 use crate::transport::kafka::{KafkaInputConfig, KafkaOutputConfig};
 use crate::transport::nats::NatsInputConfig;
+use crate::transport::rabbitmq::RabbitMqInputConfig;
 use crate::transport::nexmark::NexmarkInputConfig;
 use crate::transport::postgres::{
     PostgresCdcReaderConfig, PostgresReaderConfig, PostgresWriterConfig,
@@ -1830,6 +1831,10 @@ pub enum TransportConfig {
     NatsInput(NatsInputConfig),
     KafkaInput(KafkaInputConfig),
     KafkaOutput(KafkaOutputConfig),
+    // Snake case would rename "RabbitMqInput" to `rabbit_mq_input`.  Override the
+    // tag so the transport name is the more conventional `rabbitmq_input`.
+    #[serde(rename = "rabbitmq_input")]
+    RabbitMqInput(RabbitMqInputConfig),
     PubSubInput(PubSubInputConfig),
     UrlInput(UrlInputConfig),
     S3Input(S3InputConfig),
@@ -1868,6 +1873,7 @@ impl TransportConfig {
             TransportConfig::NatsInput(_) => "nats_input".to_string(),
             TransportConfig::KafkaInput(_) => "kafka_input".to_string(),
             TransportConfig::KafkaOutput(_) => "kafka_output".to_string(),
+            TransportConfig::RabbitMqInput(_) => "rabbitmq_input".to_string(),
             TransportConfig::PubSubInput(_) => "pub_sub_input".to_string(),
             TransportConfig::UrlInput(_) => "url_input".to_string(),
             TransportConfig::S3Input(_) => "s3_input".to_string(),
